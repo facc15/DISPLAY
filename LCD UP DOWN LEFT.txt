@@ -1,0 +1,324 @@
+
+EJERCICIO.
+AARIBA ABAJO IZQUIERDA DERECHA
+#include <LiquidCrystal.h>
+#define BTN_RIGHT 0
+#define BTN_UP 1
+#define BTN_DOWN 2
+#define BTN_LEFT 3
+#define BTN_SELECT 4
+#define BTN_NONE 5
+
+LiquidCrystal lcd(8,9,4,5,6,7);
+
+//la funcion debe devolver en queestado esta botonera.
+int readButton()
+{
+  int value=analogRead(A0);
+  if(value<72)
+  return BTN_RIGHT;
+  if(value<237)
+  return BTN_UP;
+  if(value<419)
+  return BTN_DOWN;
+  if(value<650)
+  return BTN_LEFT;
+  if(value<860)
+  return BTN_SELECT;
+  if(value<1023)
+  return BTN_NONE;
+  
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  
+  Serial.begin(9600);
+  lcd.begin(16,2);//inicializo el display.
+  
+
+  
+
+}
+
+void loop() {
+  // imprimir por puerto serie el valor que existe en el pin A0.
+  // AGREGAR EL CODIGO NECESARIO PARA QUE USANDO LA FUNCION READBUTTON SE MUESTRE EN EL LCD QUE OTON SE ESTA APRETANDO.
+  /*
+  int valorPote=analogRead(A0);
+  lcd.setCursor(0,1);
+  
+
+  lcd.print(valorPote);
+
+  lcd.print("   ");
+  */
+
+    int valorPote2=analogRead(A0);
+
+  if(readButton() == 0)
+  {
+    lcd.print("Right");
+    delay(500);
+    lcd.clear();
+  }
+   if(readButton() == 1)
+  {
+    lcd.print("Up");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 2)
+  {
+    lcd.print("Down");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 3)
+  {
+    lcd.print("Left");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 4)
+  {
+    lcd.print("Select");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 5)
+  {
+    lcd.print("None");
+    delay(300);
+    lcd.clear();
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+====================================================================================================================================
+
+
+#include <LiquidCrystal.h>
+#define BTN_RIGHT 0
+#define BTN_UP 1
+#define BTN_DOWN 2
+#define BTN_LEFT 3
+#define BTN_SELECT 4
+#define BTN_NONE 5
+
+#define STATE_CONFIG 0
+#define STATE_CLOCK 1
+LiquidCrystal lcd(8,9,4,5,6,7);
+
+int state = STATE_CONFIG;
+debe devolver en queestado esta botonera.
+int readButton()
+{
+  int value=analogRead(A0);
+  if(value<72)
+  return BTN_RIGHT;
+  if(value<237)
+  return BTN_UP;
+  if(value<419)
+  return BTN_DOWN;
+  if(value<650)
+  return BTN_LEFT;
+  if(value<860)
+  return BTN_SELECT;
+  if(value<1023)
+  return BTN_NONE;
+  
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  
+  Serial.begin(9600);
+  lcd.begin(16,2);//inicializo el display.
+  lcd.print("00:00");
+  lcd.setCursor(0,1);
+  lcd.print("^");
+
+  
+
+}
+
+
+int previousButton=BTN_NONE;
+int pos=0;
+//posicion del caracter.
+
+void loop() {
+  // imprimir por puerto serie el valor que existe en el pin A0.
+  // AGREGAR EL CODIGO NECESARIO PARA QUE USANDO LA FUNCION READBUTTON SE MUESTRE EN EL LCD QUE OTON SE ESTA APRETANDO.
+  /*
+  int valorPote=analogRead(A0);
+  lcd.setCursor(0,1);
+  
+
+  lcd.print(valorPote);
+
+  lcd.print("   ");
+  
+
+    int valorPote2=analogRead(A0);
+
+  if(readButton() == 0)
+  {
+    lcd.print("Right          ");
+    delay(500);
+    lcd.clear();
+  }
+   if(readButton() == 1)
+  {
+    lcd.print("Up          ");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 2)
+  {
+    lcd.print("Down            ");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 3)
+  {
+    lcd.print("Left");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 4)
+  {
+    lcd.print("Select          ");
+    delay(500);
+    lcd.clear();
+  }
+  if(readButton() == 5)
+  {
+    lcd.print("None            ");
+    delay(300);
+    lcd.clear();
+  }*/
+
+  
+  /*int button=readButton();  //estado del boton.
+                            //comparo como esta ahora y como estaba antes.
+ if(previousButton==BTN_NONE && button!= BTN_NONE)
+ {
+  switch(button)
+  {       case BTN_RIGHT:
+          case BTN_UP:
+                      lcd.setCursor(pos,1);
+                      lcd.print(" ");
+                      if(pos==1)
+                        pos+=2;
+                      else if(pos==4)
+                        pos=0;
+                      else
+                         pos++;
+                      lcd.setCursor(pos,1); //que se pare en la nueva posicion.. 
+                      lcd.print("^"); 
+                     break;
+                     
+         case BTN_LEFT:
+         case BTN_DOWN:
+                    lcd.setCurso3r(pos,1);
+                    lcd.print(" ");
+                    if(pos==3)
+                      pos-=2;
+                    else if(pos==0)
+                      pos=4;
+                    else
+                      pos--;
+                      lcd.setCursor(pos,1); //que se pare en la nueva posicion.. 
+                      lcd.print("^"); 
+                    break;
+
+         
+  
+  
+ }//cuando el usuario aprete y deje de apretar
+  
+  
+ 
+
+
+ }
+ 
+  previousButton=button;
+  //delay(500);*/
+
+
+  
+
+}
+
+void stateConfig()//si apreto select tiene que pasar
+{
+  switch(button)
+  {       case BTN_RIGHT:
+          case BTN_UP:
+                      lcd.setCursor(pos,1);
+                      lcd.print(" ");
+                      if(pos==1)
+                        pos+=2;
+                      else if(pos==4)
+                        pos=0;
+                      else
+                         pos++;
+                      lcd.setCursor(pos,1); //que se pare en la nueva posicion.. 
+                      lcd.print("^"); 
+                     break;
+                     
+         case BTN_LEFT:
+         case BTN_DOWN:
+                    lcd.setCurso3r(pos,1);
+                    lcd.print(" ");
+                    if(pos==3)
+                      pos-=2;
+                    else if(pos==0)
+                      pos=4;
+                    else
+                      pos--;
+                      lcd.setCursor(pos,1); //que se pare en la nueva posicion.. 
+                      lcd.print("^"); 
+                    break;
+         case BTN_SELECT:
+              state = BTN_CLOCK;
+         
+
+         
+  
+  
+ }//cuando el usuario aprete y deje de apretar
+  
+}
+
+void stateClock()
+{
+  //codigo para ir a millis y demas
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
